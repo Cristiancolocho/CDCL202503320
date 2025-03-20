@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CDCL20250320.AppWebMVC.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CDCL20250320.AppWebMVC.Controllers
 {
@@ -131,6 +135,38 @@ namespace CDCL20250320.AppWebMVC.Controllers
             }
 
             return View(user);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(User user)
+        {
+
+            var userAuth = await _context.
+                Users.
+                FirstOrDefaultAsync(s => s.Email == user.Email && s.PasswordHash == user.PasswordHash);
+            if (userAuth != null && userAuth.UserId > 0 && userAuth.Email == user.Email)
+            {
+                var claims = new[] {
+                    new Claim(ClaimTypes.Name, userAuth.Email),
+                    new Claim("UserId", userAuth.UserId.ToString()),
+                     new Claim("Username", userAuth.Username),
+                    new Claim(ClaimTypes.Role, userAuth.Role)
+                    };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "El email o contraseña estan incorrectos");
+                return View();
+            }
         }
 
         // POST: Users/Delete/5
