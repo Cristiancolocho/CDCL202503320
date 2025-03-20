@@ -7,7 +7,7 @@
 <h1>Bodegas</h1>
 
 <p>
-    <a asp-action="Create">Agregar nueva bodega</a>
+    <a asp-action="Create" class="btn btn-secundary">Agregar nueva bodega</a>
 </p>
 <table class="table">
     <thead>
@@ -39,3 +39,23 @@
 }
     </tbody>
 </table>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+             // $('#myTable').DataTable();
+
+            // $('#myTable').DataTable({
+            //      "language": {
+            //     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+            //     }
+            // });
+
+             $('#myTable').DataTable({
+               "language":languageTable
+             });
+        });
+    </script>
+}
