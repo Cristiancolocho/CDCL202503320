@@ -136,6 +136,13 @@ namespace CDCL20250320.AppWebMVC.Controllers
 
             return View(user);
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> CerrarSession()
+        {
+            // Hola mundo
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
 
         [AllowAnonymous]
         public IActionResult Login()
