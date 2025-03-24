@@ -35,7 +35,7 @@ namespace CDCL20250320.AppWebMVC.Controllers
            
             var users = _context.Users.ToList();
             users.Add(new User { Username = "SELECCIONAR", UserId = 0 });
-            ViewData["WarehouseId"] = new SelectList(users, "UserId", "Username", 0);          
+            ViewData["UserId"] = new SelectList(users, "UserId", "Username", 0);          
             return View(await query.ToListAsync());
         }
 
