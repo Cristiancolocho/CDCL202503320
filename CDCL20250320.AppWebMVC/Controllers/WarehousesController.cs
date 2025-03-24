@@ -19,12 +19,24 @@ namespace CDCL20250320.AppWebMVC.Controllers
         }
 
         // GET: Warehouses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Warehouse warehouse)
         {
-            return View(await _context.Warehouses.ToListAsync());
+            var query = _context.Warehouses.AsQueryable();
+           
+            if (warehouse.WarehouseId > 0)
+                query = query.Where(s => s.WarehouseId == warehouse.WarehouseId);
+
+
+            var test20250319DbContext = _context.Warehouses.Include(p => p.WarehouseId);
+
+           
+            var warehouses = _context.Warehouses.ToList();
+            warehouses.Add(new Warehouse { WarehouseName = "SELECCIONAR", WarehouseId = 0 });
+            ViewData["WarehouseId"] = new SelectList(warehouses, "WarehouseId", "WarehouseName", 0);
+            return View(await query.ToListAsync());
         }
 
-        // GET: Warehouses/Details/5
+        // GET: Warehouses/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

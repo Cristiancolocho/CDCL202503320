@@ -23,9 +23,20 @@ namespace CDCL20250320.AppWebMVC.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(User user)
         {
-            return View(await _context.Users.ToListAsync());
+            var query = _context.Users.AsQueryable();            
+            if (user.UserId > 0)
+                query = query.Where(s => s.UserId == user.UserId);
+
+
+            var test20250319DbContext = _context.Users.Include(p => p.UserId);
+
+           
+            var users = _context.Users.ToList();
+            users.Add(new User { Username = "SELECCIONAR", UserId = 0 });
+            ViewData["WarehouseId"] = new SelectList(users, "UserId", "Username", 0);          
+            return View(await query.ToListAsync());
         }
 
         // GET: Users/Details/5

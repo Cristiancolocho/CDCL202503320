@@ -19,9 +19,20 @@ namespace CDCL20250320.AppWebMVC.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Brand brand)
         {
-            return View(await _context.Brands.ToListAsync());
+            var query = _context.Brands.AsQueryable();
+            if (brand.BrandId > 0)
+                query = query.Where(s => s.BrandId == brand.BrandId);
+           
+
+
+            var test20250319DbContext = _context.Brands.Include(p => p.BrandId);
+
+            var brands = _context.Brands.ToList();
+            brands.Add(new Brand { BrandName = "SELECCIONAR", BrandId = 0 });          
+            ViewData["BrandId"] = new SelectList(brands, "BrandId", "BrandName", 0);
+            return View(await query.ToListAsync());
         }
 
         // GET: Brands/Details/5

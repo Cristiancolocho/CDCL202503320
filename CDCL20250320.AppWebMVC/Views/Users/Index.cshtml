@@ -6,10 +6,28 @@
 
 <h1>Usuario</h1>
 
+<form asp-action="Index">
+    <div class="row">
+       
+        <div class="col-4">
+            <div class="form-group">
+                <label class="control-label">Usuarios</label>
+                <select name="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+            <a class="btn btn-info" asp-action="Create">Ir a crear</a>
+        </div>
+    </div>
+</form>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Crear usuario</a>
 </p>
-<table class="table">
+<table class="table" id="myTable">
     <thead>
         <tr>
             <th>

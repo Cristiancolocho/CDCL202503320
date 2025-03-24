@@ -6,10 +6,28 @@
 
 <h1>Bodegas</h1>
 
+<form asp-action="Index">
+    <div class="row">
+        
+        <div class="col-4">
+            <div class="form-group">
+                <label class="control-label">Bodegas</label>
+                <select name="WarehouseId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+            <a class="btn btn-info" asp-action="Create">Ir a crear</a>
+        </div>
+    </div>
+</form>
+
 <p>
     <a asp-action="Create" class="btn btn-secundary">Agregar nueva bodega</a>
 </p>
-<table class="table">
+<table class="table" id="myTable">
     <thead>
         <tr>
             <th>
